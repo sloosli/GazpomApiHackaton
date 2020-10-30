@@ -4,10 +4,10 @@ from flask_login import login_user, logout_user
 from werkzeug.urls import url_parse
 from ProfilePageApp.main_app import db
 
-bp = Blueprint('auth', __name__, url_prefix='auth')
+bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
-@bp.route('login', methods=['POST'])
+@bp.route('/login', methods=['POST'])
 def login():
     data = request.form
     user = User.query.filter_by(username=data.get('username')).first
@@ -21,7 +21,7 @@ def login():
     return redirect(next_page)
 
 
-@bp.route('login', methods=['GET'])
+@bp.route('/login', methods=['GET'])
 def login_get():
     return render_template('auth/login.html', title='Вход')
 

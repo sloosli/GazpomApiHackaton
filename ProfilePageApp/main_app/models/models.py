@@ -33,3 +33,8 @@ class User(UserMixin, db.Model):
                 setattr(self, field, data[field])
         if 'password' in data:
             self.set_password(data['password'])
+
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
