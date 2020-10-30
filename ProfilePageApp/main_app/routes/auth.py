@@ -42,6 +42,7 @@ def register():
         db.session.commit()
         login_user(user)
         return redirect(url_for('community.index'))
+    flash(request.form)
     return redirect(url_for('auth.register_get'))
 
 

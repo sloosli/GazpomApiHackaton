@@ -26,6 +26,7 @@ class User(UserMixin, db.Model):
         flag *= not ' ' in (kwargs.get('password') or ' ')
         flag *= len(kwargs.get('company')) > 0
         flag *= len(re.findall(r'[\w.-]+@[\w.-]+\.?[\w]+?', kwargs.get('email'))) > 0
+        return flag
 
     def from_dict(self, data):
         for field in ['username', 'company', 'email']:
