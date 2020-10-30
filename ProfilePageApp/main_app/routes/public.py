@@ -28,7 +28,7 @@ api_dict = [
 @bp.route('/api_list')
 def api_list():
     services = api_dict
-    return render_template("public/api_list", services=services)
+    return render_template("public/api_list.html", services=services)
 
 
 @bp.route('/api_test')
