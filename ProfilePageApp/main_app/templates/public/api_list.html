@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<div class="api-list">
+    <div class="container-fluid">
+        {% for service un services %}
+        <div class="row">
+            <h3>{{ service['name'] }}</h3>
+            <p class="description">{{ service['description'] }}</p>
+            <a class="btn btn-primary" href="{{ url_for('') }}"></a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
