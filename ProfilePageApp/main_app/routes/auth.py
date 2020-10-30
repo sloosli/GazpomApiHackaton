@@ -10,7 +10,7 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @bp.route('/login', methods=['POST'])
 def login():
     data = request.form
-    user = User.query.filter_by(username=data.get('username')).first
+    user = User.query.filter_by(username=data.get('username')).first()
     if user is None or not user.check_password(data.get('password')):
         flash('Неправильное имя пользователя или пароль')
         return redirect(url_for('auth.login_get'))
