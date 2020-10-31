@@ -55,14 +55,27 @@ class User(UserMixin, db.Model):
 
     @staticmethod
     def _validate(data):
-        flag = True
-        flag *= ' ' not in (data.get('username') or ' ')
-        flag *= User.query.filter_by(username=data.get('username')).count() == 0
-        flag *= ' ' not in (data.get('password') or ' ')
-        flag *= len(data.get('company')) > 0
-        flag *= len(re.findall(r'[\w.-]+@[\w.-]+\.?[\w]+?', data.get('email'))) > 0
-        flag *= User.query.filter_by(email=data.get('email')).count() == 0
-        return flag
+        errors = []
+        if ' ' in (data.get('username') or ' '):
+            errors.append("Имя пользователя должно быть не пустым, и не должно содержать пробелы")
+        if User.query.filter_by(username=data.get('username')).count() != 0:
+            errors.append("К сожалению данный логин уже занят")
+        if' ' in (data.get('password') or ' '):
+            errors.append("Пароль не должен содержать пробелы")
+        if len(data.get('company', '')) == 0:
+            errors.append("Название компании не может быть пустым")
+        if User.query.filter_by(email=data.get('email')).count() != 0:
+            errors.append("Аккаунт с этой почтой уже зарегестрирован")
+        return not bool(errors), errors
+
+    def to_dict(self, full=False):
+        data = {
+            'username': self.username,
+            'company': self.company,
+            'email': self.email,
+            'access_token': self.access_token
+        }
+        return data
 
     def _from_dict(self, data):
         for field in ['username', 'company', 'email']:
@@ -73,7 +86,8 @@ class User(UserMixin, db.Model):
 
     @staticmethod
     def register(data):
-        if User._validate(data):
+        flag, errors = User._validate(data)
+        if flag:
             new_user = User()
             new_user._from_dict(data)
             token = token_urlsafe(60)
@@ -82,8 +96,8 @@ class User(UserMixin, db.Model):
             new_user.access_token = token
             db.session.add(new_user)
             db.session.commit()
-            return new_user
-        return None
+            return new_user, None
+        return None, errors
 
 
 @login.user_loader

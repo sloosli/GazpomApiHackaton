@@ -31,14 +31,15 @@ def logout():
 @bp.route('/register', methods=['POST'])
 def register():
     data = dict(request.form)
-    user = User.register(data)
+    user, errors = User.register(data)
     if user:
         login_user(user)
         return redirect(url_for('community.index'))
-    flash("Ошибка заполнения формы")
-    return redirect(url_for('auth.register_get'))
+    for error in errors:
+        flash(error)
+    return render_template('auth/register.html', title='Регистрация', params=request.form)
 
 
 @bp.route('/register', methods=['GET'])
 def register_get():
-    return render_template('auth/register.html', title='Регистрация')
+    return render_template('auth/register.html', title='Регистрация', params=dict())

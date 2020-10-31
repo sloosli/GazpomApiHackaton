@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_required, current_user
-from main_app.models import User, Service
+from main_app.models import Service
 from main_app import db
 
 bp = Blueprint("partner", __name__, url_prefix="/partner")
@@ -16,10 +16,17 @@ def api_list():
                            other_services=other_services)
 
 
+@bp.route('/cabinet')
+@login_required
+def cabinet():
+    params = current_user.to_dict()
+    return render_template("partner/cabinet.html", params=params)
+
+
 @bp.route('/stats')
 @login_required
 def stats():
-    pass
+    return "Stats"
 
 
 @bp.route('/service_add/<service_id>')

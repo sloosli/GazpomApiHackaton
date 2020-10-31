@@ -6,11 +6,12 @@
         {% for service in services %}
         <div class="row">
             <div class="col-1"></div>
-            <div class="col-10">
-                <h3>{{ service.name }}</h3>
-                <p class="description">{{ service.description }}</p>
-                <a class="btn btn-primary" href="{{ service.base_url + '/help' }}">Справка</a>
+            <div class="col-10"><h3><a href="{{ service.demo_url }}">{{ service.name }}</a></h3>
+                <p class="lead">{{ service.description }}</p>
+                <a class="btn btn-primary" href="{{ service.help_url }}">{{ service.help_url.upper() }}</a>
+                <hr>
             </div>
+            <div class="col-1"></div>
         </div>
         {% endfor %}
     </div>

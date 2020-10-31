@@ -3,3 +3,4 @@
 /run_ppa_debug.sh
 /run_api_debug.sh
 /app.db
+/main_app/templates/test.html
