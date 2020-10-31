@@ -20,6 +20,9 @@ app.register_blueprint(public_bp)
 from .routes.auth import bp as auth_bp
 app.register_blueprint(auth_bp)
 
+from .routes.partner import bp as partner_bp
+app.register_blueprint(partner_bp)
+
 files = os.listdir(os.path.abspath(os.path.dirname(__file__)) + "/routes/api")
 modules = filter(lambda x: x.endswith('.py'), files)
 for m in modules:

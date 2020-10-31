@@ -14,10 +14,7 @@ def login():
         flash('Неправильное имя пользователя или пароль')
         return redirect(url_for('auth.login_get'))
     login_user(user)
-    next_page = data.get('next_page')
-    if not next_page or url_parse(next_page).netloc != '':
-        next_page = url_for('community.index')
-    return redirect(next_page)
+    return redirect(url_for('partner.api_list'))
 
 
 @bp.route('/login', methods=['GET'])

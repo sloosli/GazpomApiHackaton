@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<div class="other-api-list">
+    <div class="container-fluid">
+        {% for service in available_services %}
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <h3>{{ service.name }}</h3>
+                <p class="description">{{ service.description }}</p>
+                <div class="row">
+                    <div class="col-6">
+                        <a class="btn btn-primary" href="{{ service.base_url + '/help' }}">Справка</a>
+                    </div>
+                    <div class="col-6">
+                        <a class="btn btn-danger" href="{{ url_for('partner.service_delete', service_id=service.id) }}">Отключить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% for service in other_services %}
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <h3>{{ service.name }}</h3>
+                <p class="description">{{ service.description }}</p>
+                <div class="row">
+                    <div class="col-6">
+                        <a class="btn btn-primary" href="{{ service.base_url + '/help' }}">Справка</a>
+                    </div>
+                    <div class="col-6">
+                        <a class="btn btn-success" href="{{ url_for('partner.service_add', service_id=service.id) }}">Подключить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -13,6 +13,22 @@ access_table = db.Table(
 )
 
 
+class Service(db.Model):
+    __tablename__ = 'services'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32), index=True, unique=True)
+    base_url = db.Column(db.String(64), index=True, unique=True)
+    description = db.Column(db.String(256))
+
+    @property
+    def help_url(self):
+        return self.base_url + "/help"
+
+    @property
+    def demo_url(self):
+        return self.base_url + "/demo"
+
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -25,6 +41,11 @@ class User(UserMixin, db.Model):
                                          secondary=access_table,
                                          lazy='dynamic',
                                          backref=db.backref('users', lazy='dynamic'))
+
+    @property
+    def other_services(self):
+        ids = [item.id for item in self.available_services]
+        return Service.query.filter(~Service.id.in_(ids))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -68,19 +89,3 @@ class User(UserMixin, db.Model):
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
-
-
-class Service(db.Model):
-    __tablename__ = 'services'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32), index=True, unique=True)
-    base_url = db.Column(db.String(64), index=True, unique=True)
-    description = db.Column(db.String(256))
-
-    @property
-    def help_url(self):
-        return self.base_url + "/help"
-
-    @property
-    def demo_url(self):
-        return self.base_url + "/demo"
