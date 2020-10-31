@@ -1,8 +1,7 @@
 from flask import Blueprint, request, flash, url_for, render_template, redirect
-from ProfilePageApp.main_app.models.models import User
+from main_app.models import User
 from flask_login import login_user, logout_user
 from werkzeug.urls import url_parse
-from ProfilePageApp.main_app import db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -35,14 +34,11 @@ def logout():
 @bp.route('/register', methods=['POST'])
 def register():
     data = dict(request.form)
-    if User.validate(**data):
-        user = User()
-        user.from_dict(data)
-        db.session.add(user)
-        db.session.commit()
+    user = User.register(data)
+    if user:
         login_user(user)
         return redirect(url_for('community.index'))
-    flash(request.form)
+    flash("Ошибка заполнения формы")
     return redirect(url_for('auth.register_get'))
 
 
