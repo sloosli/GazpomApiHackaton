@@ -13,6 +13,12 @@ access_table = db.Table(
 )
 
 
+master_keys = db.Table(
+    'master_keys',
+    db.Column("token", db.String(120))
+)
+
+
 class Service(db.Model):
     __tablename__ = 'services'
     id = db.Column(db.Integer, primary_key=True)
