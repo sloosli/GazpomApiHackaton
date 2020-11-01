@@ -21,9 +21,6 @@
             </li>
             {% if current_user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('partner.stats') }}">Статистика <span class="sr-only"></span></a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('partner.cabinet') }}">Кабинет <span class="sr-only"></span></a>
             </li>
             <li class="nav-item">

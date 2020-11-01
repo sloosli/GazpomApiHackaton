@@ -3,3 +3,4 @@
 /run_ppa_debug.sh
 /run_api_debug.sh
 /main_app/templates/test.html
+/.env
