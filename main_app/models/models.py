@@ -1,6 +1,6 @@
 import re
 from secrets import token_urlsafe
-
+from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -113,3 +113,22 @@ class User(UserMixin, db.Model):
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
+
+
+class DebetCardRequest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(32))
+    last_name = db.Column(db.String(32))
+    email = db.Column(db.String(32))
+    birthday = db.Column(db.DateTime)
+    create_date = db.Column(db.DateTime, index=True, default=datetime.utcnow())
+    status = db.Column(db.String(32), default='Подана')
+
+    @staticmethod
+    def validate(data):
+        errors = dict()
+        if not data.get('first_name', ''):
+            errors['firstname'] = 'Emtpty'
+        if not data.get('first_name', ''):
+            errors['firstname'] = 'Emtpty'
+        return errors
