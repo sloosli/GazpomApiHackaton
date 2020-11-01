@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import abort, request
 from main_app import app, db
-from .models import Service
+from .models import Service, MasterKey
 
 
 def register_service(bp, description, name):
@@ -14,6 +14,16 @@ def register_service(bp, description, name):
     current_service.description = description
     db.session.commit()
     app.register_blueprint(bp)
+
+
+def master_key_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        token = request.args.get('access_token')
+        if MasterKey.query.filter_by(token=token).count() == 0:
+            return abort(403)
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 def access_required(api_url):

@@ -13,10 +13,9 @@ access_table = db.Table(
 )
 
 
-master_keys = db.Table(
-    'master_keys',
-    db.Column("token", db.String(120))
-)
+class MasterKey(db.Model):
+    __tablename__ = 'master_keys'
+    token = db.Column(db.String(120), primary_key=True)
 
 
 class Service(db.Model):
@@ -25,6 +24,7 @@ class Service(db.Model):
     name = db.Column(db.String(32), index=True, unique=True)
     base_url = db.Column(db.String(64), index=True, unique=True)
     description = db.Column(db.String(256))
+    internal = db.Column(db.Boolean, default=True, nullable=False)
 
     @property
     def help_url(self):
@@ -33,6 +33,10 @@ class Service(db.Model):
     @property
     def demo_url(self):
         return self.base_url + "/demo"
+
+    @property
+    def get_params_url(self):
+        return self.base_url + "/params"
 
 
 class User(UserMixin, db.Model):

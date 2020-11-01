@@ -34,7 +34,7 @@ def register():
     user, errors = User.register(data)
     if user:
         login_user(user)
-        return redirect(url_for('community.index'))
+        return redirect(url_for('index'))
     for error in errors:
         flash(error)
     return render_template('auth/register.html', title='Регистрация', params=request.form)

@@ -12,5 +12,5 @@ login = LoginManager(app)
 login.login_view = 'auth.login'
 login.login_message = 'Вам необходимо войти, что бы увидеть эту страницу'
 
-from .routes import main_route
 from . import models
+from .routes import main_route

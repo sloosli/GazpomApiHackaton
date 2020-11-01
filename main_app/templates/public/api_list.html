@@ -6,7 +6,8 @@
         {% for service in services %}
         <div class="row">
             <div class="col-1"></div>
-            <div class="col-10"><h3><a href="{{ service.demo_url }}">{{ service.name }}</a></h3>
+            <div class="col-10"><h3><a href="{{ url_for('public.api_demo', service_id=service.id) }}">{{ service.name
+                }}</a></h3>
                 <p class="lead">{{ service.description }}</p>
                 <a class="btn btn-primary" href="{{ service.help_url }}">{{ service.help_url.upper() }}</a>
                 <hr>
