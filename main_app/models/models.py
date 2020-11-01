@@ -123,6 +123,7 @@ class DebetCardRequest(db.Model):
     birthday = db.Column(db.DateTime)
     create_date = db.Column(db.DateTime, index=True, default=datetime.utcnow())
     status = db.Column(db.String(32), default='Подана')
+    access_token = db.Column(db.String(128))
 
     @staticmethod
     def validate(data):
@@ -131,4 +132,23 @@ class DebetCardRequest(db.Model):
             errors['firstname'] = 'Emtpty'
         if not data.get('first_name', ''):
             errors['firstname'] = 'Emtpty'
-        return errors
+        if not data.get('email', ''):
+            errors['email'] = 'Emtpty'
+        if not data.get('birthday', ''):
+            errors['birthday'] = 'Emtpty'
+        return not bool(errors), errors
+
+    @staticmethod
+    def register(data):
+        flag, errors = DebetCardRequest.validate(data)
+        if flag:
+            req = DebetCardRequest()
+            req.first_name = data['first_name']
+            req.last_name = data['last_name']
+            req.email = data['email']
+            req.birthday = data['birthday']
+            req.access_token = data['access_token']
+            db.session.add(req)
+            db.session.commit()
+            return True, {'result': 'success', 'request_id': req.id}
+        return False, {'result': 'error', 'errors': errors}
