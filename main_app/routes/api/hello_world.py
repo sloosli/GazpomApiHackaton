@@ -18,7 +18,7 @@ def get_params():
     return jsonify({
         "name": {
             "type": "string",
-            "demo": "world"
+            "default": "world"
         }
     })
 
@@ -31,7 +31,7 @@ def help():
 @bp.route('/demo')
 @master_key_required
 def demo():
-    name = str(request.args.get('name'))
+    name = str(request.args.get('name', default="world"))
     return jsonify({"result": "Hello, %s!" % name.capitalize()})
 
 
